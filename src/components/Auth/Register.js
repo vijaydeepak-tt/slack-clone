@@ -74,9 +74,9 @@ class Register extends React.Component {
   };
 
   handleSubmit = (event) => {
+    event.preventDefault();
     if (this.isFormValid()) {
       this.setState({ errors: [], loading: true });
-      event.preventDefault();
       const { email, password, username } = this.state;
       firebase
         .auth()
@@ -139,7 +139,7 @@ class Register extends React.Component {
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" icon color="orange" textAlign="center">
+          <Header as="h1" icon color="orange" textAlign="center">
             <Icon name="puzzle piece" color="orange" />
             Register for DevChat
           </Header>
@@ -195,7 +195,7 @@ class Register extends React.Component {
                 fluid
                 size="large"
               >
-                Submit
+                REGISTER
               </Button>
             </Segment>
           </Form>

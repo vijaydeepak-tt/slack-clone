@@ -9,7 +9,7 @@ import {
 
 import firebase from "./firebase";
 
-import { setUser } from "./store/actions";
+import { setUser, clearUser } from "./store/actions";
 
 import App from "./components/App";
 import Login from "./components/Auth/Login";
@@ -24,6 +24,7 @@ class Root extends React.Component {
         this.props.history.push("/");
       } else {
         this.props.history.push("/login");
+        this.props.clearUser();
       }
     });
   }
@@ -40,13 +41,15 @@ class Root extends React.Component {
   }
 }
 
-const mapStateFromProps = (state) => {
+const mapStateToProps = (state) => {
   return {
     isLoading: state.user.isLoading,
   };
 };
 
-const RootWithAuth = withRouter(connect(mapStateFromProps, { setUser })(Root));
+const RootWithAuth = withRouter(
+  connect(mapStateToProps, { setUser, clearUser })(Root)
+);
 
 export const Routes = () => (
   <Router>

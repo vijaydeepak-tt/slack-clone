@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { SET_USER } from "../actions/types";
+import { SET_USER, CLEAR_USER } from "../actions/types";
 
 const initialUserState = {
   currentUser: null,
@@ -15,7 +15,11 @@ const user_reducer = (state = initialUserState, action) => {
         currentUser: action.payload.currentUser,
         isLoading: false,
       };
-
+    case CLEAR_USER:
+      return {
+        ...initialUserState,
+        isLoading: false,
+      };
     default:
       return state;
   }

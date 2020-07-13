@@ -7,25 +7,31 @@ import SidePanel from "./SidePanel";
 import Messages from "./Messages";
 import MetaPanel from "./MetaPanel";
 
-const App = ({ currentUser }) => {
+const App = ({ currentUser, currentChannel }) => {
   return (
-    <div className="app" columns="equal" style={{ background: "#eee" }}>
-      <Grid>
-        <ColorPanel />
-        <SidePanel currentUser={currentUser} />
-        <Grid.Column style={{ marginLeft: 320 }}>
-          <Messages />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <MetaPanel />
-        </Grid.Column>
-      </Grid>
-    </div>
+    <Grid className="app" columns="equal" style={{ background: "#eee" }}>
+      <ColorPanel />
+      <SidePanel
+        key={currentUser && currentUser.id}
+        currentUser={currentUser}
+      />
+      <Grid.Column style={{ marginLeft: 260 }}>
+        <Messages
+          key={currentChannel && currentChannel.id}
+          currentChannel={currentChannel}
+          currentUser={currentUser}
+        />
+      </Grid.Column>
+      <Grid.Column width={4}>
+        <MetaPanel />
+      </Grid.Column>
+    </Grid>
   );
 };
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, channel }) => ({
   currentUser: user.currentUser,
+  currentChannel: channel.currentChannel,
 });
 
 export default connect(mapStateToProps)(App);

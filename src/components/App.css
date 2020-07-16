@@ -6,6 +6,11 @@ body,
   padding: 1em;
 }
 
+/* SidePanel.js */
+.menu {
+  padding-bottom: 0.6em !important;
+}
+
 /* Messages/index.js */
 .messages {
   height: 55vh;

@@ -8,8 +8,12 @@ body,
 
 /* Messages/index.js */
 .messages {
-  height: 345px;
+  height: 55vh;
   overflow-y: scroll;
+}
+
+.messages__progress {
+  /* height: 53vh; */
 }
 
 /* MessageForm */
@@ -30,4 +34,9 @@ body,
 
 .message__image {
   padding: 1em;
+}
+
+/* ProgressBar.js */
+.progress__bar {
+  margin: 0.3em 0 0 0 !important;
 }

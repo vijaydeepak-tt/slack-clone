@@ -5,7 +5,7 @@ import { Modal, Button, Input, Icon } from "semantic-ui-react";
 class FileModal extends React.Component {
   state = {
     file: null,
-    authorized: ["image/jpg", "image/png"],
+    authorized: ["image/jpg", "image/png", "image/jpeg"],
   };
 
   addFile = (event) => {

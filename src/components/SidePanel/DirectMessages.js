@@ -3,6 +3,7 @@ import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 import firebase from "../../firebase";
+import { setCurrentChannel, setPrivateChannel } from "../../store/actions";
 
 class DirectMessages extends React.Component {
   state = {
@@ -11,6 +12,7 @@ class DirectMessages extends React.Component {
     usersRef: firebase.database().ref("users"),
     connectedRef: firebase.database().ref(".info/connected"),
     presenceRef: firebase.database().ref("presence"),
+    activeChannel: "",
   };
 
   componentDidMount() {
@@ -71,8 +73,29 @@ class DirectMessages extends React.Component {
 
   isUserOnline = (user) => user.status === "online";
 
+  changeChannel = (user) => {
+    const channelId = this.getChannelId(user.uid);
+    const channelData = {
+      id: channelId,
+      name: user.name,
+    };
+    this.props.setCurrentChannel(channelData);
+    this.props.setPrivateChannel(true);
+  };
+
+  setActiveChannel = (userId) => {
+    this.setState({ activeChannel: userId });
+  };
+
+  getChannelId = (userId) => {
+    const currentUserId = this.state.user.uid;
+    return userId < currentUserId
+      ? `${userId}/${currentUserId}`
+      : `${currentUserId}/${userId}`;
+  };
+
   render() {
-    const { users } = this.state;
+    const { users, activeChannel } = this.state;
     return (
       <>
         <Menu.Menu style={{ paddingBottom: "2em" }}>
@@ -88,7 +111,8 @@ class DirectMessages extends React.Component {
             return (
               <Menu.Item
                 key={user.uid}
-                onClick={() => console.log(user)}
+                active={user.uid === activeChannel}
+                onClick={() => this.changeChannel(user)}
                 style={{ opacity: 0.7, fontStyle: "italic" }}
               >
                 <Icon
@@ -105,4 +129,6 @@ class DirectMessages extends React.Component {
   }
 }
 
-export default DirectMessages;
+export default connect(null, { setCurrentChannel, setPrivateChannel })(
+  DirectMessages
+);

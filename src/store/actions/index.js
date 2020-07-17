@@ -4,6 +4,7 @@ import {
   SET_CURRENT_CHANNEL,
   SET_PRIVATE_CHANNEL,
   SET_USER_POSTS,
+  SET_COLORS,
 } from "./types";
 
 // User Actions
@@ -47,6 +48,17 @@ export const setUserPosts = (userPosts) => {
     type: SET_USER_POSTS,
     payload: {
       userPosts,
+    },
+  };
+};
+
+/* Colors Actions */
+export const setColors = (primaryColor, secondaryColor) => {
+  return {
+    type: SET_COLORS,
+    payload: {
+      primaryColor,
+      secondaryColor,
     },
   };
 };

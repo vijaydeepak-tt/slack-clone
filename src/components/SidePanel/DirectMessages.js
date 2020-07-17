@@ -81,6 +81,7 @@ class DirectMessages extends React.Component {
     };
     this.props.setCurrentChannel(channelData);
     this.props.setPrivateChannel(true);
+    this.setActiveChannel(user.uid);
   };
 
   setActiveChannel = (userId) => {

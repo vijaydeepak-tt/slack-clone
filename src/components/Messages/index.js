@@ -1,7 +1,9 @@
 import React from "react";
 import { Segment, Comment } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 import firebase from "../../firebase";
+import { setUserPosts } from "../../store/actions";
 
 import MessagesHeader from "./MessagesHeader";
 import MessageForm from "./MessageForm";
@@ -40,7 +42,23 @@ class Messages extends React.Component {
       loadMessages.push(snap.val());
       this.setState({ messages: loadMessages, messagesLoading: false });
       this.countUniqueUsers(loadMessages);
+      this.countUserPosts(loadMessages);
     });
+  };
+
+  countUserPosts = (messages) => {
+    let userPosts = messages.reduce((acc, message) => {
+      if (message.user.name in acc) {
+        acc[message.user.name].count += 1;
+      } else {
+        acc[message.user.name] = {
+          avatar: message.user.avatar,
+          count: 1,
+        };
+      }
+      return acc;
+    }, {});
+    this.props.setUserPosts(userPosts);
   };
 
   addUserStartListener = (channelId, userId) => {
@@ -208,4 +226,4 @@ class Messages extends React.Component {
   }
 }
 
-export default Messages;
+export default connect(null, { setUserPosts })(Messages);

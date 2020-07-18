@@ -9,6 +9,7 @@ import ProgressBar from "./ProgressBar";
 class MessageForm extends React.Component {
   state = {
     storageRef: firebase.storage().ref(),
+    typingRef: firebase.database().ref("typing"),
     message: "",
     channel: this.props.currentChannel,
     user: this.props.currentUser,
@@ -26,6 +27,16 @@ class MessageForm extends React.Component {
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleKeyDown = () => {
+    const { message, typingRef, channel, user } = this.state;
+
+    if (message) {
+      typingRef.child(channel.id).child(user.uid).set(user.displayName);
+    } else {
+      typingRef.child(channel.id).child(user.uid).remove();
+    }
   };
 
   createMessage = (fileUrl = null) => {
@@ -48,7 +59,7 @@ class MessageForm extends React.Component {
 
   sendMessage = () => {
     const { getMessagesRef } = this.props;
-    const { message, channel } = this.state;
+    const { message, channel, typingRef, user } = this.state;
     if (message) {
       this.setState({ loading: true });
       getMessagesRef()
@@ -57,6 +68,7 @@ class MessageForm extends React.Component {
         .set(this.createMessage())
         .then(() => {
           this.setState({ loading: false, message: "", errors: [] });
+          typingRef.child(channel.id).child(user.uid).remove();
         })
         .catch((err) => {
           console.error(err);
@@ -173,6 +185,7 @@ class MessageForm extends React.Component {
           label={<Button icon="add" />}
           labelPosition="left"
           value={message}
+          onKeyDown={this.handleKeyDown}
           placeholder="Write yout message"
           className={this.handleInputError(errors, "message")}
         />
